@@ -142,8 +142,8 @@ export const Note = (props) => {
 
 export const Pencil = ({props, size}) => {
   const sizing={
-    width:56.01/size,
-    height:182.11/size
+    width:76.01/size,
+    height:140.11/size
   }
     return(
         <motion.svg 
