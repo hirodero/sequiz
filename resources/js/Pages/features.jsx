@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Pencil, Book, Clock } from "../components/ui/attributes"
 export default function Features(){
     const [toDo,setToDo] = useState(false)
+    const size=1;
     return(
         <div className="flex flex-col h-dvh">
             <div className="w-full h-[10%] shadow-2xl"/>
@@ -29,8 +30,8 @@ export default function Features(){
                         onHoverStart={()=>setToDo(true)} 
                         onHoverEnd={()=>setToDo(false)}
                         className="flex justify-center items-center hover:opacity-75 cursor-pointer hover:scale-102 transition duration-500 ease-in-out w-[350px] h-[350px] bg-white/90 outline-4 outline-blue-600 ring-8 rounded-full">
-                            <Pencil props={toDo} />
-                            <Book props={toDo}/>
+                            <Pencil props={toDo} size={size} />
+                            <Book props={toDo} size={size}/>
                         </motion.div>
                         <p className="text-4xl">
                             To-Do List 
@@ -42,7 +43,7 @@ export default function Features(){
                         animate={{opacity:1}}
                         transition={{duration:0.4, ease:'easeInOut'}}
                         className="flex justify-center items-center hover:opacity-75 cursor-pointer hover:scale-102 transition duration-500 ease-in-out w-[350px] h-[350px] bg-white/90 outline-4 outline-blue-600 ring-8 rounded-full">
-                            <Clock/>
+                            <Clock size={size}/>
                         </motion.div>
                         <p className="text-4xl">
                             Set Alarm
