@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/react'
 import { Note, SignIn, LearnMore, PersonalComputer, Pencil, Book, Clock } from '../components/ui/attributes';
 export default function Home() {
     const [toDo,setToDo] = useState(false)
+    const [clock,setClock] = useState(false)
     const [roles, setRole] = useState(false)
     const role = roles?'user':'guest' 
     const size = 2;
@@ -89,8 +90,10 @@ export default function Home() {
                         initial={{opacity:0}}
                         animate={{opacity:1}}
                         transition={{duration:0.4, ease:'easeInOut'}}
+                        onHoverStart={()=>setClock(true)} 
+                        onHoverEnd={()=>setClock(false)}
                         className="flex justify-center items-center hover:opacity-75 cursor-pointer hover:scale-102 transition duration-500 ease-in-out w-[175px] h-[175px] bg-white/90 outline-4 outline-blue-600 ring-8 rounded-full">
-                            <Clock size={size}/>
+                            <Clock props={clock} size={size}/>
                         </motion.div>
                         <p className="text-4xl">
                             Set Alarm
