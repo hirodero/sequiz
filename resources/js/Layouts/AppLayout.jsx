@@ -1,20 +1,31 @@
 import Header from "../components/ui/header";
 import { FlickeringGrid } from "@/components/ui/flickering-grid";
+import MatrixBackground from "@/components/ui/matrix-background";
+import { LayoutProvider, useLayout } from "./LayoutContext";
 export default function AppLayout ({title, children}){
     return(
-        <div className="fixed inset-0 overflow-y-auto bg-[url('/assets/Desktop.png')] w-full h-dvh flex flex-col bg-cover">
+    <LayoutProvider>
+      <Shell>{children}</Shell>
+    </LayoutProvider>
+    )
+}
+function Shell({ children }) {
+  const { sharedValue } = useLayout();
+  return (
+    <div className="fixed inset-0 overflow-y-auto bg-green-700 w-full h-dvh flex flex-col bg-cover">
             <Header/>
+            <MatrixBackground active={sharedValue}/>
             <FlickeringGrid
-                className="absolute inset-0"
-                squareSize={4}
-                gridGap={6}
+                className="absolute inset-0 -z-10"
+                squareSize={5}
+                gridGap={10}
                 flickerChance={0.3}
-                color="rgb(255, 255, 255)"
+                color="rgb(255, 255 , 0)"
                 maxOpacity={0.2}
             />
-            <main className="h-dvh">
+            <main className="h-dvh bg-gradient-to-t from-green-700/25 via-black/80 to-green-900/25">
                 {children}
             </main>
         </div>
-    )
+  );
 }

@@ -1,12 +1,12 @@
 'use client'
 import { Link, usePage } from '@inertiajs/react'
-const Profile = (props) => {
-    return(
-        <img className="object-contain cursor-pointer hover:opacity-75 hover:scale-98 transition duration-75 ease-in-out" src="/assets/profile.png"/>
-    )
-}
+import { useState } from 'react'
+import { ProfileIcon } from './attributes'
+import Profile from './profile'
+import { AnimatePresence } from 'framer-motion'
 export default function Header({sidebar}){
     const {url} = usePage()
+    const [profile, setProfile] = useState(false)
     const links = [
         {name:'Home',href:'/'},
         {name:'About',href:'/about'},
@@ -15,7 +15,7 @@ export default function Header({sidebar}){
     return(
         <div className="w-screen h-[10%] shadow-2xl [shadow:_1px_1px_4_#000] fixed top-0 z-25">
             <div className="w-full h-full"
-            style={{background:'#03045E'}}>
+            style={{background:'#123524'}}>
                 <div className="flex ml-auto w-[30%] justify-center items-center h-full">
                     <div className="flex justify-evenly items-center text-2xl h-full w-[80%] text-white">
                         {
@@ -24,7 +24,7 @@ export default function Header({sidebar}){
                                 return(
                                     <div key={arr} 
                                     className={`cursor-pointer hover:opacity-75 hover:scale-98 transition duration-100 ease-in-out 
-                                        ${active?'text-[#1e90ff]':'text-[#FFFFFF]'}`}
+                                        ${active?'text-[#00a550]':'text-[#FFFFFF]'}`}
                                     >
                                         <Link href={items.href}>{items.name}</Link>
                                     </div>
@@ -32,9 +32,20 @@ export default function Header({sidebar}){
                             })
                         }
                     </div>
-                    <div className="flex justify-center items-center h-full w-[20%]">
+                    <div className="flex justify-center items-center h-full w-[20%] z-50">
                         <div className="flex justify-center items-center w-[65%] h-full">
-                            <Profile/>
+                            <button 
+                            onClick={()=>setProfile(!profile)}
+                            className='flex flex-col justify-center items-center w-full h-full'>
+                                <ProfileIcon/>
+                                <AnimatePresence>
+                                    {
+                                        profile&&(
+                                            <Profile profile={profile} setProfile={setProfile} />
+                                        )
+                                    }
+                                </AnimatePresence>
+                            </button>
                         </div>
                     </div>
                 </div>

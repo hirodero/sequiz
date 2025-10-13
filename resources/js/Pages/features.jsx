@@ -13,7 +13,7 @@ export default function Features(){
                 initial={{opacity:0}}
                 animate={{opacity:1}}
                 transition={{duration:0.3}}
-                 className="flex flex-col justify-center items-center bg-gradient-to-r from-transparent via-blue-200 to-transparent shadow-2xl w-full h-[10%] p-4 text-6xl text-white [-webkit-text-stroke:0.4px_black] [text-shadow:_4px_4px_0_#000]">
+                 className="flex flex-col justify-center items-center bg-gradient-to-r from-transparent via-green-600/70 to-transparent shadow-2xl w-full h-[10%] p-4 text-6xl text-white [-webkit-text-stroke:0.4px_black] [text-shadow:_4px_4px_0_#000]">
                     <motion.h1
                     initial={{scale:0.8}}
                     animate={{scale:1}}
