@@ -1,6 +1,6 @@
 import Header from "../components/ui/header";
-import { FlickeringGrid } from "@/components/ui/flickering-grid";
-import MatrixBackground from "@/components/ui/matrix-background";
+import { FlickeringGrid } from "../components/ui/flickering-grid";
+import MatrixBackground from "../components/ui/matrix-background";
 import { LayoutProvider, useLayout } from "./LayoutContext";
 export default function AppLayout ({title, children}){
     return(

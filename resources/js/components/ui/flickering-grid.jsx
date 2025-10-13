@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 export const FlickeringGrid = ({
   squareSize = 4,

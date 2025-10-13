@@ -7,7 +7,7 @@ import { Route } from 'lucide-react';
 import { Link } from '@inertiajs/react'
 import { router } from '@inertiajs/react';
 import { useLayout } from "../Layouts/LayoutContext";
-import Placeholder from '@/components/ui/placeholder';
+import Placeholder from '../components/ui/placeholder';
 import { Search, SignIn, LearnMore, PersonalComputer, Pencil, Book, Clock } from '../components/ui/attributes';
 export default function Home() {
   const {setSharedValue} = useLayout()
