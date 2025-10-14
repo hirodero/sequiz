@@ -80,6 +80,7 @@ export default function HomeSkeleton({buttonDelay}) {
                         role!=='user'?(
                         <>
                           <motion.button 
+                          onClick={()=>router.visit('/login')}
                           initial={{
                             scale:0, 
                             opacity:0,

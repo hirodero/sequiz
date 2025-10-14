@@ -2,6 +2,7 @@ import Header from "../components/ui/header";
 import { FlickeringGrid } from "../components/ui/flickering-grid";
 import MatrixBackground from "../components/ui/matrix-background";
 import { LayoutProvider, useLayout } from "./LayoutContext";
+import { usePage } from "@inertiajs/react";
 import Direction from "@/components/ui/direction";
 export default function AppLayout ({title, children}){
     return(
@@ -11,11 +12,20 @@ export default function AppLayout ({title, children}){
     )
 }
 function Shell({ children }) {
-  const { sharedValue } = useLayout();
+  const {url} = usePage();
+  const { sharedValue, routes } = useLayout();
+  const urlCheck = routes.includes(url)
   return (
     <div className="fixed inset-0 overflow-y-auto bg-green-700 w-full h-dvh flex flex-col bg-cover">
-            <Header/>
-            <Direction/>
+            {
+              urlCheck&&
+              (
+              <>
+                <Direction/>
+                <Header/>
+              </>
+            )
+            }
             <MatrixBackground active={sharedValue}/>
             <FlickeringGrid
                 className="absolute inset-0 -z-10"

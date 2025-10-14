@@ -43,11 +43,6 @@ export default function About({}){
                                 transition={{duration:0.4, ease:'easeInOut'}} className="text-wrap">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                                 </motion.p>
-                                <button
-                            onClick={()=>navigate()}
-                            className='cursor-pointer outline-green-600 ring-white ring-4 active:scale-90 active:opacity-100 duration-75 ease-in-out hover:opacity-70 bg-green-700/80 outline-2 w-[100px] text-white text-xl h-[50px] rounded-2xl'>
-                                switch
-                            </button>     
                             </motion.div>
                         </div>
                     </motion.div>

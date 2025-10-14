@@ -1,6 +1,6 @@
 'use client'
 import Form from "@/components/ui/form"
-export default function Login({}){
+export default function Register({}){
     return(
         <Form/>
     )
