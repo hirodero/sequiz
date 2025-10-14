@@ -13,7 +13,7 @@ export default function Header({sidebar}){
         {name:'Features',href:'/features'},
     ]
     return(
-        <div className="w-screen h-[10%] shadow-2xl [shadow:_1px_1px_4_#000] fixed top-0 z-25">
+        <div className="w-screen h-[10%] shadow-2xl [shadow:_1px_1px_4_#000] fixed top-0 z-50">
             <div className="w-full h-full"
             style={{background:'#123524'}}>
                 <div className="flex ml-auto w-[30%] justify-center items-center h-full">

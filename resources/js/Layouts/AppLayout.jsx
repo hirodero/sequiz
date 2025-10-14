@@ -2,6 +2,7 @@ import Header from "../components/ui/header";
 import { FlickeringGrid } from "../components/ui/flickering-grid";
 import MatrixBackground from "../components/ui/matrix-background";
 import { LayoutProvider, useLayout } from "./LayoutContext";
+import Direction from "@/components/ui/direction";
 export default function AppLayout ({title, children}){
     return(
     <LayoutProvider>
@@ -14,6 +15,7 @@ function Shell({ children }) {
   return (
     <div className="fixed inset-0 overflow-y-auto bg-green-700 w-full h-dvh flex flex-col bg-cover">
             <Header/>
+            <Direction/>
             <MatrixBackground active={sharedValue}/>
             <FlickeringGrid
                 className="absolute inset-0 -z-10"

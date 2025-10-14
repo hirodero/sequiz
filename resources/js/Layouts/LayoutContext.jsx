@@ -1,11 +1,18 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const LayoutContext = createContext(null);
 
 export function LayoutProvider({ children }) {
   const [sharedValue, setSharedValue] = useState(false);
+  const [isHomeActive, setHomeActive] = useState(false);
+  const [next, setNext] = useState(null);
+  const [currIdx,setIdx] = useState(null)
+  const routes = ['/','/about','/features'];
+//   useEffect(()=>{
+
+//   })
   return (
-    <LayoutContext.Provider value={{ sharedValue, setSharedValue }}>
+    <LayoutContext.Provider value={{ sharedValue, setSharedValue, isHomeActive, setHomeActive, next, setNext, currIdx, setIdx, routes}}>
       {children}
     </LayoutContext.Provider>
   );

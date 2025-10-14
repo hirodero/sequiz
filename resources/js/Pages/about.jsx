@@ -1,33 +1,69 @@
-import { motion } from "framer-motion"
-export default function About(){
+import { AnimatePresence, motion } from "framer-motion"
+import { router, usePage } from '@inertiajs/react';
+import { useLayout } from "../Layouts/LayoutContext";
+import { useState, useEffect } from 'react';
+
+import Home from "./home"
+import HomeSkeleton from "@/components/ui/home-component";
+export default function About({}){
+    const {url} = usePage()
+    const [switchPage, setSwitch] = useState(false)
+    const {setSharedValue, isHomeActive, currIdx, routes, next} = useLayout()
+    useEffect(()=>{
+      if(routes[currIdx] === url)
+      {
+        setSwitch(true)
+      }
+    },[currIdx])
     return(
-        <motion.div 
-        className="fixed inset-0 flex flex-col h-dvh "
-        >
-            <div className="w-full h-[10%] shadow-2xl"/>
-            <div className="flex flex-col items-center justify-center w-full h-[100%] gap-2">
-                <motion.div 
-                // initial={{opacity:0, x:-100}}
-                // animate={{opacity:1, x:0}}
-                // transition={{duration:1}}
-                className="flex flex-col justify-center w-full h-[10%] p-4 pl-[10%] text-6xl text-white bg-gradient-to-r via-transparent from-green-700/70 to-transparent [-webkit-text-stroke:0.4px_black] [text-shadow:_4px_4px_0_#000]">
-                    <motion.h1
-                    animate={{opacity:[0,1]}}
-                    transition={{duration:0.4, ease:'easeInOut'}}>
-                        About Sequiz
-                    </motion.h1>
-                </motion.div>
-                <motion.div 
-                // initial={{opacity:0}}
-                // animate={{opacity:1}}
-                // transition={{duration:0.4, type:'tween'}}
-                className="w-[80%] h-[70%] p-4 text-white text-2xl bg-green-800/70 rounded-2xl [-webkit-text-stroke:0.3px_green] outline-3 font-extralight shadow-2xl">
-                    <motion.p animate={{opacity:[0,1]}}
-                    transition={{duration:0.4, ease:'easeInOut'}} className="text-wrap">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </motion.p>
-                </motion.div>
-            </div>
-        </motion.div>
+        <>
+        <AnimatePresence>
+            {
+                !switchPage&&(routes[next]!=url)?(
+                    <motion.div 
+                    animate={{translateX:0, translateY:0, scale:1}}
+                    exit={{translateX:1500, translateY:100 ,scale:0.5}}
+                    transition={{duration:0.8, ease:'easeInOut'}}
+                    key='about'
+                    className="fixed inset-0 flex flex-col h-dvh "
+                    >
+                        <div className="w-full h-[10%] shadow-2xl"/>
+                        <div className="flex flex-col items-center justify-center w-full h-[100%] gap-2">
+                            <motion.div 
+                            className="flex flex-col justify-center w-full h-[10%] p-4 pl-[10%] text-6xl text-white bg-gradient-to-r via-transparent from-green-700/70 to-transparent [-webkit-text-stroke:0.4px_black] [text-shadow:_4px_4px_0_#000]">
+                                <motion.h1
+                                animate={{opacity:[0,1]}}
+                                transition={{duration:0.4, ease:'easeInOut'}}>
+                                    About Sequiz
+                                </motion.h1>
+                            </motion.div>
+                            <motion.div 
+                            className="w-[80%] h-[70%] p-4 text-white text-2xl bg-green-800/70 rounded-2xl [-webkit-text-stroke:0.3px_green] outline-3 font-extralight shadow-2xl">
+                                <motion.p animate={{opacity:[0,1]}}
+                                transition={{duration:0.4, ease:'easeInOut'}} className="text-wrap">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                </motion.p>
+                                <button
+                            onClick={()=>navigate()}
+                            className='cursor-pointer outline-green-600 ring-white ring-4 active:scale-90 active:opacity-100 duration-75 ease-in-out hover:opacity-70 bg-green-700/80 outline-2 w-[100px] text-white text-xl h-[50px] rounded-2xl'>
+                                switch
+                            </button>     
+                            </motion.div>
+                        </div>
+                    </motion.div>
+
+                ):(
+            <motion.div 
+            key='home'
+            initial={{opacity:0, scale:0.5, translateX:-1600}}
+            animate={{opacity:1, scale:1, translateX:0}}
+            transition={{duration:1, ease:'easeInOut', type:'tween'}}
+            className="fixed inset-0 flex flex-col h-dvh ">
+                <HomeSkeleton buttonDelay={5}/>
+            </motion.div>
+                )
+            }        
+        </AnimatePresence>
+        </>
     )
 }
