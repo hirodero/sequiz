@@ -9,11 +9,9 @@ import { router } from '@inertiajs/react'
 import { useLayout } from "../../Layouts/LayoutContext";
 export default function Direction({sidebar}){
     const {url} = usePage()
-    // const [profile, setProfile] = useState(false)
     const [leftHover,setHoverLeft] = useState(false)
     const [rightHover,setHoverRight] = useState(false)
     const {setSharedValue, setHomeActive, setNext, setIdx, routes} = useLayout()
-    // const state = ['/','/about','/features']
     const idx = routes.indexOf(url)
     const navigate = (clicks)=>{
         const next = clicks==='left'?

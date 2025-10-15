@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion"
 import { router, usePage } from '@inertiajs/react';
 import { useLayout } from "../Layouts/LayoutContext";
 import { useState, useEffect } from 'react';
-
 import Home from "./home"
 import HomeSkeleton from "@/components/ui/home-component";
 export default function About({}){

@@ -1,5 +1,18 @@
+'use client'
 import { motion } from "framer-motion"
-export default function Placeholder(){
+import { ProfileIcon } from "./attributes"
+export const Overlay = ({items}) => {
+    return(
+        <motion.div 
+        initial={{opacity:0}}
+        animate={{opacity:1}}
+        exit={{opacity:0}}
+        className="flex fixed inset-0 text-white [-webkit-text-stroke:0.4px_black] [text-shadow:_4px_4px_0_#000] justify-center items-center backdrop-blur-xs backdrop-brightness-120">
+            {items}
+        </motion.div>
+    )
+}
+export const Placeholder = () => {
     return(
         <>
             <div className="w-full h-[10%] shadow-2xl"/>

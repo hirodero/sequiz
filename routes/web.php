@@ -2,11 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+$pages = ['/', '/about', '/features', '/login', '/register','/forgot-password'];
 
+$items = array_map(function($page){
+    return ($name= ltrim($page, '/')) === '' ? 'home' : $name;
+},$pages);
 
-Route::get('/', fn () => Inertia::render('home'));
-Route::get('/about', fn () => Inertia::render('about'));
-Route::get('/features', fn () => Inertia::render('features'));
-Route::get('/login', fn() => Inertia::render('login'));
-Route::get('/register', fn() => Inertia::render('register'));
+$associate = array_map(function($a, $b){
+    return ['page'=>$a, 'file'=>$b];
+},$pages,$items);
+
+foreach ($associate as $item) {
+    Route::get($item['page'],fn()=> Inertia::render($item['file']));
+}
 

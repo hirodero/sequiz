@@ -1,13 +1,10 @@
 'use client'
 import { motion } from "framer-motion"
 import { ProfileIcon } from "./attributes"
+import Overlay from "./overlay-skeleton"
 export default function Profile({profile, setProfile}){
     return(
-        <motion.div 
-        initial={{opacity:0}}
-        animate={{opacity:1}}
-        exit={{opacity:0}}
-        className="flex fixed inset-0 text-white [-webkit-text-stroke:0.4px_black] [text-shadow:_4px_4px_0_#000] justify-center items-center backdrop-blur-xs backdrop-brightness-120">
+        <Overlay items={
             <div className="flex h-[80%] w-[80%] outline-4 bg-green-950/80 rounded-2xl">
                 <div className="flex flex-col justify-center items-center w-[40%] h-full">
                     <ProfileIcon/>
@@ -35,9 +32,8 @@ export default function Profile({profile, setProfile}){
                     <div className="flex flex-col justify-center outline-2 rounded-tl-2xl rounded-br-2xl w-full h-[25%] bg-neutral-900">
                         <p className="text-6xl text-wrap">Sequiz</p>
                     </div>
-
                 </div>
             </div>
-        </motion.div>
+            }/>
     )
 }

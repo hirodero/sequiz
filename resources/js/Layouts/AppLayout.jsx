@@ -12,7 +12,7 @@ export default function AppLayout ({title, children}){
     )
 }
 function Shell({ children }) {
-  const {url} = usePage();
+  const {url} = usePage(); 
   const { sharedValue, routes } = useLayout();
   const urlCheck = routes.includes(url)
   return (
