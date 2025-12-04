@@ -12,13 +12,29 @@ export default function AppLayout ({title, children}){
     )
 }
 function Shell({ children }) {
-  const {url} = usePage(); 
   const { sharedValue, routes } = useLayout();
+  const { component, url } = usePage();
+  const hideHeaderComponents = [
+    "DatabaseDown",
+    'ResetPassword'
+  ];
+
+  const hideHeaderUrls = [
+    "/login",
+    "/register",
+    '/verify-otp',
+    "/",
+  ];
+
+    const shouldHideHeader =
+        hideHeaderComponents.includes(component) ||
+        hideHeaderUrls.includes(url);
+
   const urlCheck = routes.includes(url)
   return (
     <div className="fixed inset-0 overflow-y-auto bg-green-700 w-full h-dvh flex flex-col bg-cover">
             {
-              urlCheck&&
+              !shouldHideHeader&&
               (
               <>
                 <Direction/>

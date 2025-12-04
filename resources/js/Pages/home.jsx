@@ -6,8 +6,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Link, usePage } from '@inertiajs/react'
 import { router } from '@inertiajs/react';
 import { useLayout } from "../Layouts/LayoutContext";
-import Placeholder from '../components/ui/placeholder';
 import HomeSkeleton from '@/components/ui/home-component';
+import { Placeholder } from '@/components/ui/overlay-skeleton';
 import { Search, SignIn, LearnMore, PersonalComputer, Pencil, Book, Clock } from '../components/ui/attributes';
 export default function Home() {
   const {setSharedValue, isHomeActive, currIdx, routes, next} = useLayout()

@@ -5,6 +5,8 @@ import { Link, usePage } from '@inertiajs/react'
 import { router } from '@inertiajs/react';
 import { useLayout } from "@/Layouts/LayoutContext";
 import { Search, SignIn, LearnMore, PersonalComputer, Pencil, Book, Clock } from '@/components/ui/attributes';
+import { truncate } from '@/lib/utils';
+
 export default function HomeSkeleton({buttonDelay}) {
   const {setSharedValue, isHomeActive, currIdx, routes, next} = useLayout()
   const { url } = usePage()
@@ -12,7 +14,10 @@ export default function HomeSkeleton({buttonDelay}) {
   const [clock,setClock] = useState(false)
   const [roles, setRole] = useState(false)
   const [switchPage, setSwitch] = useState(false)
-  const role = roles?'user':'guest' 
+    const { props } = usePage();
+    const auth = props?.auth ?? {};
+    const user = auth?.user ?? null;
+    const username = truncate(user?.name) ?? 'Guest';
   const size = {sizeAll:2, sizePencil:3};
   return (
     <motion.div 
@@ -26,9 +31,8 @@ export default function HomeSkeleton({buttonDelay}) {
           <div className='flex flex-row w-[100%] h-[15%]'>          
             <div className='flex justify-center items-center w-[20%] h-full'>
               <button
-              onClick={()=>setRole(!roles)}
-              className='cursor-pointer outline-green-600 ring-white ring-4 active:scale-90 active:opacity-100 duration-75 ease-in-out hover:opacity-70 bg-green-700/80 outline-2 w-[100px] text-white text-xl h-[50px] rounded-2xl'>
-                {role}
+              className='outline-green-600 ring-white ring-4 duration-75 ease-in-out bg-green-700/80 outline-2 w-[100px] text-white text-xl h-[50px] rounded-2xl'>
+                {username}
               </button>       
             </div>
           </div>
@@ -76,7 +80,7 @@ export default function HomeSkeleton({buttonDelay}) {
                 </div>
                 <div className='flex justify-between w-[50%] pt-5'>
                   {
-                    role!=='user'?(
+                    username=='Guest'?(
                     <>
                       <motion.button 
                       onClick={()=>router.visit('/login')}
@@ -124,45 +128,29 @@ export default function HomeSkeleton({buttonDelay}) {
                         initial={{opacity:0,translateX:700}}
                         animate={{opacity:1,translateX:0}}
                         transition={{duration:1, ease:'easeOut'}}
-                        className="flex flex-col w-[50%] items-center justify-baseline h-full gap-6">
+                        className="flex flex-col w-full items-center justify-baseline h-full gap-6">
                           <motion.div
-                          initial={{opacity:0}}
-                          animate={{opacity:1}}
-                          transition={{
-                            duration:0.4, 
-                            ease:'easeInOut',
-                          }}
                           onHoverStart={()=>setToDo(true)} 
                           onHoverEnd={()=>setToDo(false)}
-                          className="flex justify-center items-center gap-x-3 pr-5 hover:opacity-75 cursor-pointer hover:scale-102 transition duration-500 ease-in-out w-[175px] h-[175px] bg-white/70 outline-4 outline-green-600 ring-8  rounded-full">
-                              <Pencil props={toDo} size={size.sizePencil} />
-                              <Book props={toDo} size={size.sizeAll}/>
+                          className="flex justify-center items-center gap-x-3 pr-5 hover:opacity-75 cursor-pointer hover:scale-102 transition duration-500 ease-in-out w-[175px] h-[175px] bg-gradient from-green-800 to-transparent">
+                            <motion.img 
+                            animate={{
+                            x: [0, 50, 0],
+                            y: [0, 30, 0],       
+                            rotate: [0, -0.2, 9,0], 
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }}
+                          whileHover={{rotate:780}}
+                          className='w-full h-full object-contain hover:animate-pulse hover:scale-90 duration-75' src='/assets/search.png'/>
                           </motion.div>
                             <p className="text-4xl">
-                              To-Do List 
+                              Play the Trivia! 
                             </p>
                           </motion.div>
-                          <motion.div 
-                          initial={{opacity:0,translateX:-700}}
-                          animate={{opacity:1,translateX:0}}
-                          transition={{duration:1, ease:'easeOut'}}
-                          className="flex flex-col w-[50%] items-center justify-baseline h-full gap-6">
-                            <motion.div
-                            initial={{opacity:0}}
-                            animate={{opacity:1}}
-                            transition={{
-                              duration:0.4, 
-                              ease:'easeInOut'
-                            }}
-                            onHoverStart={()=>setClock(true)} 
-                            onHoverEnd={()=>setClock(false)}
-                            className="flex justify-center items-center hover:opacity-75 cursor-pointer hover:scale-102 transition duration-500 ease-in-out w-[175px] h-[175px] bg-white/90 outline-4 outline-blue-600 ring-8 rounded-full">
-                              <Clock props={clock} size={size.sizeAll}/>
-                            </motion.div>
-                            <p className="text-4xl">
-                                Set Alarm
-                            </p>
-                        </motion.div>
                         </> 
                       )
                     }

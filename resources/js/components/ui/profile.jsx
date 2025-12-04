@@ -1,13 +1,13 @@
 'use client'
 import { motion } from "framer-motion"
 import { ProfileIcon } from "./attributes"
-import Overlay from "./overlay-skeleton"
+import { Overlay } from "./overlay-skeleton"
 export default function Profile({profile, setProfile}){
     return(
         <Overlay items={
             <div className="flex h-[80%] w-[80%] outline-4 bg-green-950/80 rounded-2xl">
                 <div className="flex flex-col justify-center items-center w-[40%] h-full">
-                    <ProfileIcon/>
+                    <ProfileIcon className="w-[250px] h-[250px] max-w-[80%] max-h-[80%]" />
                 </div>
                 <div className="flex flex-col w-[60%] h-full bg-green-800/80 rounded-2xl">
                     <div className="flex flex-col items-end bg-neutral-900/80 outline-2 rounded-bl-2xl rounded-tr-2xl w-full h-[20%]">
@@ -34,6 +34,6 @@ export default function Profile({profile, setProfile}){
                     </div>
                 </div>
             </div>
-            }/>
+        }/>
     )
 }

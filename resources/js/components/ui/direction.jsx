@@ -45,7 +45,7 @@ export default function Direction({sidebar}){
                 onHoverStart={()=>setHoverRight(true)}
                 onHoverEnd={()=>setHoverRight(false)}
                 onClick={()=>navigate('right')}
-                className={`${url===routes[2]?'cursor-not-allowed':'cursor-pointer'} flex items-center justify-center w-[60px] h-[60px] rounded-full bg-neutral-950 text-2xl outline-white outline-2`}>
+                className={`${url===routes[1]?'cursor-not-allowed':'cursor-pointer'} flex items-center justify-center w-[60px] h-[60px] rounded-full bg-neutral-950 text-2xl outline-white outline-2`}>
                     {`>`}
                 </motion.button>
             </div>

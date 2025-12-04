@@ -1,59 +1,169 @@
-'use client'
+"use client"
+
+import { useState, useMemo } from "react"
 import { Link, router, usePage } from "@inertiajs/react"
-import { motion } from "framer-motion"
 import { Overlay } from "./overlay-skeleton"
-export default function Form(){
-    const {url} = usePage()
-    const setter = url==='/register'? {
-        cols: ['Username','Gmail','Password','Re-enter password'],
-        gap: 15,
-        bodyHeight: '65%',
-        footerHeight: '15%',
-        link: <Link href='/login' className="hover:opacity-75">Login</Link>
-    }:{
-        cols: ['Username','Password'],
-        gap: 35,
-        bodyHeight: '65%',
-        footerHeight: '15%',
-        link: <Link href='/register' className="hover:opacity-75">Register</Link>
-    }
-    return(
-        <Overlay items={
-            <div className="flex flex-col items-center h-[75%] w-[50%] outline-4 bg-gradient-to-tr from-lime-900/80 to-lime-900/80 via-black/80 rounded-2xl text-2xl">
-                <div className='flex flex-col items-center justify-center h-[20%] gap-5 bg-neutral-900/90 outline-2 w-full rounded-t-2xl'>
-                    <h1 className="text-5xl">
-                        {url.slice(1,url.length).toUpperCase()}
-                    </h1>
+
+export default function Form() {
+  const { url } = usePage()
+
+  const list = {
+    "/form/register": {
+      cols: ["Username", "Gmail", "Password", "Re-enter password"],
+      gap: 15,
+      bodyHeight: "65%",
+      footerHeight: "15%",
+      link: (
+        <Link href="/form/login" className="hover:opacity-75">
+          Login
+        </Link>
+      ),
+      submit: "/form/otp",
+    },
+    "/form/login": {
+      cols: ["Username", "Password"],
+      gap: 35,
+      bodyHeight: "65%",
+      footerHeight: "15%",
+      link: (
+        <Link href="/form/register" className="hover:opacity-75">
+          Register
+        </Link>
+      ),
+      submit: "/",
+    },
+    "/form/otp": {
+      cols: ["OTP Code"],
+      gap: 35,
+      bodyHeight: "65%",
+      footerHeight: "15%",
+      link: (
+        <Link href="/form/register" className="hover:opacity-75">
+          Register
+        </Link>
+      ),
+      submit: "/form/login",
+    },
+  }
+
+  const setter = list[url] ?? { cols: [] }
+
+  const [formData, setFormData] = useState(
+    Object.fromEntries(setter.cols.map((label) => [label, ""]))
+  )
+
+  const getInputType = (label) => {
+    const lower = label.toLowerCase()
+    if (lower.includes("password")) return "password"
+    if (lower.includes("gmail") || lower.includes("email")) return "email"
+    if (lower.includes("otp")) return "text"
+    return "text"
+  }
+
+  const handleChange = (label, value) => {
+    setFormData((prev) => ({ ...prev, [label]: value }))
+  }
+
+  const handleSubmit = () => {
+    console.log("submitted form data:", formData)
+    router.visit(setter.submit)
+  }
+
+  const outerBox =
+    "flex flex-col items-center " +
+    "h-[75%] w-[50%] " +
+    "rounded-2xl text-2xl outline outline-[2px] outline-white/90 " +
+    "bg-gradient-to-tr from-lime-900/80 via-black/80 to-lime-900/80 " +
+    "shadow-[0_0_40px_rgba(0,0,0,0.8)]"
+
+  const headerBox =
+    "flex flex-col items-center justify-center " +
+    "h-[20%] gap-5 w-full rounded-t-2xl " +
+    "bg-neutral-900/90 border-b border-white/80"
+
+  const bodyBox = "flex flex-col items-center justify-center w-full"
+  const bodyInner = "flex flex-col w-[75%] justify-center items-center text-white"
+
+  const textInputWrapper = "w-full flex flex-col"
+  const textInputStyles =
+    "w-full min-h-[50px] px-4 text-white text-xl bg-transparent " +
+    "border border-white rounded-full outline-none " +
+    "placeholder:text-white/80 " +
+    "focus:ring-4 focus:ring-white/40 focus:bg-white/5 transition duration-150 ease-in-out"
+
+  const footerLinksRow =
+    "flex justify-between items-center w-full pt-6 text-white text-xl"
+
+  const submitBox =
+    "group cursor-pointer flex flex-col items-center justify-center " +
+    "w-full rounded-b-2xl bg-black border-t border-white/80 " +
+    "text-4xl text-white py-8 select-none"
+
+  const submitButton =
+    "group-hover:opacity-45 transition duration-150 ease-in-out"
+
+  const formTitle = useMemo(
+    () => url.replace("/form/", "").toUpperCase(),
+    [url]
+  )
+
+  return (
+    <Overlay
+      items={
+        <div className={outerBox}>
+          <div className={headerBox}>
+            <h1 className="text-5xl text-white font-bold tracking-wider drop-shadow-[2px_2px_0_#000]">
+              {formTitle}
+            </h1>
+          </div>
+
+          <div
+            style={{ height: setter.bodyHeight }}
+            className={bodyBox}
+          >
+            <div
+              style={{ gap: setter.gap }}
+              className={bodyInner}
+            >
+              {setter.cols.map((label, index) => (
+                <div
+                  key={index}
+                  className={textInputWrapper}
+                >
+                  <input
+                    type={getInputType(label)}
+                    value={formData[label] ?? ""}
+                    onChange={(e) => handleChange(label, e.target.value)}
+                    className={textInputStyles}
+                    placeholder={label}
+                    autoComplete="off"
+                  />
                 </div>
-                <div 
-                style={{height:setter.bodyHeight}}
-                className='flex flex-col items-center justify-center gap-5 w-full '>
-                    <div 
-                    style={{gap:setter.gap}}
-                    className="flex flex-col w-[75%] justify-center items-center ">
-                        {setter.cols.map((items,index)=>{
-                            return(
-                            <div className='flex flex-col justify-center w-full px-[15px] min-h-[50px] outline-2 rounded-4xl'>
-                                {items}
-                            </div>
-                            )
-                        })
-                        }
-                        <div className="flex justify-between items-center gap-5 h-[10%] w-full ">
-                            <Link href='/forgot-password' className="hover:opacity-75">Forgot Password?</Link>
-                            {setter.link}
-                        </div>
-                    </div>
-                </div>
-                <div 
-                onClick={()=>router.visit('/')}
-                style={{height:setter.footerHeight}}
-                className="group cursor-pointer flex flex-col text-4xl items-center justify-center gap-5 py-10 w-full bg-black outline-2 rounded-b-2xl">
-                    <button className="group-hover:opacity-45 cursor-pointer text-4xl justify-center items-center">
-                        Submit
-                    </button>
-                </div>
+              ))}
+
+              <div className={footerLinksRow}>
+                <Link
+                  href="/form/forgot-password"
+                  className="hover:opacity-75"
+                >
+                  Forgot Password?
+                </Link>
+                {setter.link}
+              </div>
             </div>
-        }/>
-    )
+          </div>
+
+          <div
+            style={{ height: setter.footerHeight }}
+            className={submitBox}
+            onClick={handleSubmit}
+          >
+            <button className={submitButton}>
+              Submit
+            </button>
+          </div>
+        </div>
+      }
+    />
+  )
 }
