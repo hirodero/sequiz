@@ -7,10 +7,8 @@ export function LayoutProvider({ children }) {
   const [isHomeActive, setHomeActive] = useState(false);
   const [next, setNext] = useState(null);
   const [currIdx,setIdx] = useState(null)
-  const routes = ['/','/about','/features'];
-//   useEffect(()=>{
+  const routes = ['/','/about'];
 
-//   })
   return (
     <LayoutContext.Provider value={{ sharedValue, setSharedValue, isHomeActive, setHomeActive, next, setNext, currIdx, setIdx, routes}}>
       {children}

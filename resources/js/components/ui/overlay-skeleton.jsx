@@ -1,6 +1,7 @@
 'use client'
 import { motion } from "framer-motion"
 import { ProfileIcon } from "./attributes"
+
 export const Overlay = ({items}) => {
     return(
         <motion.div 

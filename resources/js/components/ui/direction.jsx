@@ -3,7 +3,6 @@ import { Link, usePage } from '@inertiajs/react'
 import { useState } from 'react'
 import { ProfileIcon } from './attributes'
 import { motion } from 'framer-motion'
-import Profile from './profile'
 import { AnimatePresence } from 'framer-motion'
 import { router } from '@inertiajs/react'
 import { useLayout } from "../../Layouts/LayoutContext";
@@ -41,7 +40,7 @@ export default function Direction({sidebar}){
                     {`<`}
                 </motion.button>
                 <motion.button
-                animate={url===routes[2]? {opacity:0.6}:(rightHover?{opacity:0.6}:{opacity:1})}
+                animate={url===routes[1]? {opacity:0.6}:(rightHover?{opacity:0.6}:{opacity:1})}
                 onHoverStart={()=>setHoverRight(true)}
                 onHoverEnd={()=>setHoverRight(false)}
                 onClick={()=>navigate('right')}

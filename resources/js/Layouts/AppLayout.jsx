@@ -23,7 +23,8 @@ function Shell({ children }) {
     "/login",
     "/register",
     '/verify-otp',
-    "/",
+    '/forgot-password',
+    "/quiz",
   ];
 
     const shouldHideHeader =

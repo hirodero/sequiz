@@ -40,9 +40,6 @@ export default function Register() {
                 password_confirmation: formData.ReenterPassword,
             },
             {
-                onSuccess: () => {
-                    router.visit('/verify-otp');  
-                },
                 onFinish: () => {
                     setIsLoading(false);
                 },
@@ -60,10 +57,7 @@ export default function Register() {
             </p>
         
             <div className="flex flex-col items-center w-full max-w-[600px] pt-[60px]">
-                {/* <div className="w-[100px] h-[100px]">
-                    <Logo/>
-                </div>
-             */}
+
                 <div className="flex flex-col items-center bg-neutral-900/90 p-10 rounded-3xl text-green-400 shadow-2xl w-full border-2 border-[#00a424] min-h-[500px] max-h-[600px] scrollbar-hide overflow-y-auto">
                     <p className=" text-2xl text-center justify-center mb-10 font-semibold">
                         Regist your account!

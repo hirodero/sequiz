@@ -130,6 +130,7 @@ export default function HomeSkeleton({buttonDelay}) {
                         transition={{duration:1, ease:'easeOut'}}
                         className="flex flex-col w-full items-center justify-baseline h-full gap-6">
                           <motion.div
+                          onClick={()=>router.visit('/quiz')}
                           onHoverStart={()=>setToDo(true)} 
                           onHoverEnd={()=>setToDo(false)}
                           className="flex justify-center items-center gap-x-3 pr-5 hover:opacity-75 cursor-pointer hover:scale-102 transition duration-500 ease-in-out w-[175px] h-[175px] bg-gradient from-green-800 to-transparent">
