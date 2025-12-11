@@ -12,6 +12,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\LeaderboardController;
 
 $staticPages = ['/', '/about', '/features'];
 foreach ($staticPages as $page) {
@@ -71,6 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/timer', fn () => Inertia::render('timer'))->name('timer');
+    Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 
     Route::controller(QuizController::class)->group(function () {
         Route::get('/quiz', 'show')->name('quiz.show');
