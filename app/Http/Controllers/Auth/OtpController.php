@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,6 +14,26 @@ class OtpController extends Controller
     protected int $maxAttempts   = 5;
     protected int $otpTtlMinutes = 10;
     protected int $resendLimit   = 3;
+
+    private function otpKey(string $email): string
+    {
+        return "otp_register_{$email}";
+    }
+
+    private function attemptsKey(string $email): string
+    {
+        return "otp_register_{$email}_attempts";
+    }
+
+    private function expiresKey(string $email): string
+    {
+        return "otp_register_{$email}_expires";
+    }
+
+    private function resendKey(string $email): string
+    {
+        return "otp_register_{$email}_resend";
+    }
 
     public function show(Request $request)
     {
@@ -26,13 +45,14 @@ class OtpController extends Controller
         }
 
         return inertia('OTPVerification', [
-            'email'   => $email,
-            'status'  => session('success'),
-            'errors'  => session('errors') ? session('errors')->getBag('default')->getMessages() : [],
+            'email'  => $email,
+            'status' => session('success'),
+            'errors' => session('errors') ? session('errors')->getBag('default')->getMessages() : [],
         ]);
     }
 
-    public function verify(Request $request): RedirectResponse {
+    public function verify(Request $request): RedirectResponse
+    {
         $request->validate([
             'otp_code' => ['required', 'digits:6'],
         ]);
@@ -45,22 +65,28 @@ class OtpController extends Controller
             ]);
         }
 
-        $otpKey      = "otp:register:{$email}";
-        $attemptsKey = "otp:register:{$email}:attempts";
+        $otpKey      = $this->otpKey($email);
+        $attemptsKey = $this->attemptsKey($email);
+        $expiresKey  = $this->expiresKey($email);
+        $resendKey   = $this->resendKey($email);
 
-        $hashedOtp = Cache::get($otpKey);
+        $hashedOtp = session($otpKey);
+        $expiresAt = (int) session($expiresKey, 0);
 
-        if (! $hashedOtp) {
+        if (! $hashedOtp || $expiresAt < now()->timestamp) {
+            session()->forget([$otpKey, $attemptsKey, $expiresKey]);
+            session()->save();
+
             return back()->withErrors([
                 'otp_code' => 'Your code has expired. Please request a new one.',
             ]);
         }
 
-        $attempts = Cache::get($attemptsKey, 0);
+        $attempts = (int) session($attemptsKey, 0);
 
         if ($attempts >= $this->maxAttempts) {
-            Cache::forget($otpKey);
-            Cache::forget($attemptsKey);
+            session()->forget([$otpKey, $attemptsKey, $expiresKey, $resendKey]);
+            session()->save();
 
             return back()->withErrors([
                 'otp_code' => 'Too many incorrect attempts. A new code is required.',
@@ -68,15 +94,13 @@ class OtpController extends Controller
         }
 
         if (! Hash::check($request->otp_code, $hashedOtp)) {
-            Cache::put($attemptsKey, $attempts + 1, now()->addMinutes($this->otpTtlMinutes));
+            session([$attemptsKey => $attempts + 1]);
+            session()->save();
 
             return back()->withErrors([
                 'otp_code' => 'Invalid code. Please try again.',
             ]);
         }
-
-        Cache::forget($otpKey);
-        Cache::forget($attemptsKey);
 
         $user = User::where('email', $email)->first();
 
@@ -89,7 +113,8 @@ class OtpController extends Controller
             auth()->login($user);
         }
 
-        session()->forget('otp_email');
+        session()->forget(['otp_email', $otpKey, $attemptsKey, $expiresKey, $resendKey]);
+        session()->save();
 
         return redirect('/')
             ->with('success', 'Your email has been verified successfully.');
@@ -104,8 +129,12 @@ class OtpController extends Controller
                 ->withErrors(['login' => 'Session expired. Please register or log in again.']);
         }
 
-        $resendKey = "otp:register:{$email}:resend_count";
-        $count     = Cache::get($resendKey, 0);
+        $otpKey      = $this->otpKey($email);
+        $attemptsKey = $this->attemptsKey($email);
+        $expiresKey  = $this->expiresKey($email);
+        $resendKey   = $this->resendKey($email);
+
+        $count = (int) session($resendKey, 0);
 
         if ($count >= $this->resendLimit) {
             return back()->withErrors([
@@ -113,19 +142,19 @@ class OtpController extends Controller
             ]);
         }
 
-        $otp      = random_int(100000, 999999);
-        $hashedOtp = Hash::make($otp);
+        $otp = random_int(100000, 999999);
 
-        $otpKey      = "otp:register:{$email}";
-        $attemptsKey = "otp:register:{$email}:attempts";
-
-        Cache::put($otpKey, $hashedOtp, now()->addMinutes($this->otpTtlMinutes));
-        Cache::put($attemptsKey, 0, now()->addMinutes($this->otpTtlMinutes));
-        Cache::put($resendKey, $count + 1, now()->addMinutes($this->otpTtlMinutes));
+        session([
+            $otpKey      => Hash::make((string) $otp),
+            $attemptsKey => 0,
+            $resendKey   => $count + 1,
+            $expiresKey  => now()->addMinutes($this->otpTtlMinutes)->timestamp,
+        ]);
+        session()->save();
 
         Mail::raw("Your new Sequiz verification code is: {$otp}", function ($message) use ($email) {
             $message->to($email)
-                    ->subject('Your new Sequi OTP Code');
+                ->subject('Your new Sequiz OTP Code');
         });
 
         return back()->with('success', 'We have resent your verification code.');
