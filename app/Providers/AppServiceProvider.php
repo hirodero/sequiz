@@ -3,23 +3,25 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL; 
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(){
-    if (config('app.env') === 'production') {
-        $this->app->useStoragePath('/tmp/storage');
+    public function register(): void
+    {
+        if (config('app.env') === 'production') {
+            $viewPath = '/tmp/storage/framework/views';
+            if (!is_dir($viewPath)) {
+                mkdir($viewPath, 0755, true);
+            }
+            config(['view.compiled' => $viewPath]);
+        }
     }
-}
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 }
